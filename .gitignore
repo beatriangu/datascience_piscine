@@ -15,3 +15,7 @@ Thumbs.db
 data/
 customer/*.csv
 items/*.csv
+data/
+venv/
+*.log
+__pycache__/
