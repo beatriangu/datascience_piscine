@@ -1,3 +1,5 @@
+
+
 services:
   db:
     image: postgres:13
@@ -10,6 +12,14 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./db_init:/docker-entrypoint-initdb.d      # Scripts de inicialización
+      - ./data/customer:/data/customer             # CSVs de clientes (singular)
+      - ./data/items:/data/items                   # CSVs de ítems
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bea -d piscineds"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   app:
     build:
@@ -19,8 +29,11 @@ services:
     working_dir: /app
     volumes:
       - .:/app
+      - ./scripts/etl:/app/etl                     # Scripts ETL
+      - ./scripts/viz:/app/viz                     # Scripts Data Viz
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       POSTGRES_USER: bea
       POSTGRES_PASSWORD: mysecretpassword
@@ -36,7 +49,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       - db
     volumes:
@@ -45,5 +58,11 @@ services:
 volumes:
   pgdata:
   pgadmin_data:
+
+
+
+
+
+
 
 

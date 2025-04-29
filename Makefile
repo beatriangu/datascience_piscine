@@ -3,7 +3,7 @@
 # Archivo de configuración de Docker Compose
 docker_compose_file := docker-compose.yml
 
-# Variables de entorno (ajusta según tu entorno)
+# Variables de entorno
 export POSTGRES_USER := bea
 export POSTGRES_PASSWORD := mysecretpassword
 export POSTGRES_DB := piscineds
@@ -14,7 +14,7 @@ up:
 	@echo "🚀 Levantando todos los servicios con Docker Compose"
 	docker-compose -f $(docker_compose_file) up -d
 
-# --- Detener todos los servicios (sin eliminar volúmenes) ---
+# --- Detener todos los servicios ---
 .PHONY: down
 down:
 	@echo "🛑 Deteniendo todos los servicios"
@@ -31,44 +31,44 @@ clean:
 restart: clean up
 	@echo "🔄 Reiniciando todos los servicios"
 
+# --- Acceder a la terminal de PostgreSQL ---
+.PHONY: db-shell
+db-shell:
+	@echo "🛢️  Conectando a PostgreSQL"
+	docker-compose -f $(docker_compose_file) exec db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
+
+# --- Ejecutar script SQL ---
+.PHONY: run-sql
+run-sql:
+	@echo "📜 Ejecutando script SQL"
+	docker-compose -f $(docker_compose_file) exec -T db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -c "$(shell cat fusion.sql)"
+
 # --- Levantar solo pgAdmin ---
 .PHONY: pgadmin
 pgadmin:
-	@echo "🚀 Levantando solo pgAdmin"
+	@echo "📊 Levantando pgAdmin"
 	docker-compose -f $(docker_compose_file) up -d pgadmin
 
-# --- Detener pgAdmin ---
-.PHONY: pgadmin-stop
-pgadmin-stop:
-	@echo "🛑 Deteniendo pgAdmin"
-	docker-compose -f $(docker_compose_file) stop pgadmin
-
-# --- Levantar solo la base de datos ---
-.PHONY: db
-db:
-	@echo "🚀 Levantando solo la base de datos"
-	docker-compose -f $(docker_compose_file) up -d db
-
-# --- Detener la base de datos ---
-.PHONY: db-stop
-db-stop:
-	@echo "🛑 Deteniendo la base de datos"
-	docker-compose -f $(docker_compose_file) stop db
-
-# --- Acceder al shell del contenedor de la aplicación ---
+# --- Acceder al shell de la aplicación ---
 .PHONY: shell
 shell:
-	@echo "🔗 Abriendo shell en contenedor 'app'"
-	docker-compose -f $(docker_compose_file) exec app bash
+	@echo "🐚 Abriendo shell en contenedor 'app'"
+	docker-compose -f $(docker_compose_file) exec app sh
 
-# --- Mostrar logs de todos los servicios ---
+# --- Ejecutar análisis Mustache ---
+.PHONY: mustache
+mustache:
+	@echo "📊 Generando gráficos Mustache"
+	docker-compose -f $(docker_compose_file) exec app python mustache.py
+
+# --- Mostrar logs ---
 .PHONY: logs
 logs:
-	@echo "📋 Mostrando logs de todos los servicios"
+	@echo "📋 Mostrando logs"
 	docker-compose -f $(docker_compose_file) logs -f
 
-# --- Abrir pgAdmin 4 GUI nativa (macOS) ---
-.PHONY: pgadmin-native
-pgadmin-native:
-	@echo "🔗 Abriendo pgAdmin 4 GUI nativa (macOS)"
-	open -a "pgAdmin 4"
+# --- Verificar estado de la DB ---
+.PHONY: check-db
+check-db:
+	@echo "🔍 Verificando estado de PostgreSQL"
+	docker-compose -f $(docker_compose_file) exec db pg_isready

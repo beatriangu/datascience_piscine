@@ -1,41 +1,37 @@
--- ex03/fusion.sql
--- Exercise 03: Inspect table structures and create 'customers_full' by merging 'customers' with 'items'
+-- Data_Warehouse/ex03/fusion.sql
 
--- 1) Inspect 'customers' table structure
-SELECT column_name, data_type, ordinal_position
-  FROM information_schema.columns
- WHERE table_schema = 'public'
-   AND table_name   = 'customers'
- ORDER BY ordinal_position;
-
--- 2) Inspect 'items' table structure
-SELECT column_name, data_type, ordinal_position
-  FROM information_schema.columns
- WHERE table_schema = 'public'
-   AND table_name   = 'items'
- ORDER BY ordinal_position;
-
--- 3) Create the merged table 'customers_full'
--- Explanation of LEFT JOIN:
--- A LEFT JOIN returns all rows from the "left" table (customers),
--- and the matched rows from the "right" table (items).
--- If there is no match, the result is NULL on the right side.
--- We use LEFT JOIN to ensure that every customer event remains,
--- even when the corresponding product_id is not present in the items table.
-
--- Drop existing fused table if it exists
+-- 1) Eliminar la tabla anterior si existe
 DROP TABLE IF EXISTS customers_full;
 
--- Create the fused table
+-- 2) Crear customers_full fusionando customers con una versión única de items
 CREATE TABLE customers_full AS
+WITH uniq_items AS (
+  SELECT DISTINCT ON (product_id)
+    product_id,
+    category_id,
+    category_code,
+    brand,
+    price
+  FROM items
+  ORDER BY product_id
+)
 SELECT
-    c.*,
-    i.item_name,
-    i.price,
-    i.category
+  c.event_time,
+  c.event_type,
+  c.product_id,
+  c.price        AS purchase_price,
+  c.user_id,
+  c.user_session,
+  ui.category_id,
+  ui.category_code,
+  ui.brand        AS item_brand,
+  ui.price        AS item_price
 FROM customers c
-LEFT JOIN items i
-  ON c.product_id = i.product_id;
+LEFT JOIN uniq_items ui
+  ON c.product_id = CAST(ui.product_id AS INTEGER);
 
--- Optional: Add index on product_id for faster joins
--- CREATE INDEX idx_customers_full_product_id ON customers_full(product_id);
+-- 3) Índice opcional para acelerar consultas por product_id
+CREATE INDEX IF NOT EXISTS idx_customers_full_product_id
+  ON customers_full(product_id);
+
+
