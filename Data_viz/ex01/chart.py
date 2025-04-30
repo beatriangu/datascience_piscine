@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # chart.py
 
+import os
+import argparse
 import psycopg2
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -38,9 +40,9 @@ def fetch_purchases():
     return rows
 
 
-def plot_daily_customers(rows):
+def plot_daily_customers(rows, outdir):
     """
-    Plot daily unique customer counts.
+    Plot daily unique customer counts and save to outdir.
     """
     daily_users = defaultdict(set)
     for user_id, event_time, _, _ in rows:
@@ -52,20 +54,26 @@ def plot_daily_customers(rows):
 
     plt.figure(figsize=(12, 5))
     plt.plot(dates, counts, linewidth=1)
-    # plt.title("Daily Unique Customers")
     plt.ylabel("Number of Customers")
+
     # Show ticks at the start of each month
     xticks = [i for i, d in enumerate(dates) if d.endswith('-01')]
-    xticklabels = [datetime.strptime(d, '%Y-%m-%d').strftime('%b') for d in dates if d.endswith('-01')]
+    xticklabels = [
+        datetime.strptime(d, '%Y-%m-%d').strftime('%b') 
+        for d in dates if d.endswith('-01')
+    ]
     plt.xticks(xticks, xticklabels)
     plt.tight_layout()
-    plt.savefig("daily_customers.png")
+
+    path = os.path.join(outdir, "daily_customers.png")
+    plt.savefig(path)
     plt.clf()
+    print(f"Saved: {path}")
 
 
-def plot_monthly_sales(rows):
+def plot_monthly_sales(rows, outdir):
     """
-    Plot total monthly sales.
+    Plot total monthly sales and save to outdir.
     """
     monthly_sales = defaultdict(float)
     for _, event_time, _, price in rows:
@@ -81,13 +89,16 @@ def plot_monthly_sales(rows):
     plt.xlabel("Month")
     plt.ylabel("Sales (Altairian $)")
     plt.tight_layout()
-    plt.savefig("monthly_sales.png")
+
+    path = os.path.join(outdir, "monthly_sales.png")
+    plt.savefig(path)
     plt.clf()
+    print(f"Saved: {path}")
 
 
-def plot_monthly_avg_spend(rows):
+def plot_monthly_avg_spend(rows, outdir):
     """
-    Plot average spend per customer per month as an area chart.
+    Plot average spend per customer per month and save to outdir.
     """
     monthly_sales = defaultdict(float)
     monthly_users = defaultdict(set)
@@ -97,8 +108,12 @@ def plot_monthly_avg_spend(rows):
         monthly_users[month].add(user_id)
 
     months = sorted(monthly_sales.keys())
-    avg_spend = [monthly_sales[m] / len(monthly_users[m]) for m in months]
-    labels = [datetime.strptime(m, '%Y-%m').strftime('%b') for m in months]
+    avg_spend = [
+        monthly_sales[m] / len(monthly_users[m]) for m in months
+    ]
+    labels = [
+        datetime.strptime(m, '%Y-%m').strftime('%b') for m in months
+    ]
 
     plt.figure(figsize=(10, 5))
     plt.fill_between(labels, avg_spend, alpha=0.3)
@@ -107,22 +122,38 @@ def plot_monthly_avg_spend(rows):
     plt.xlabel("Month")
     plt.ylabel("Average Spend (Altairian $)")
     plt.tight_layout()
-    plt.savefig("avg_spend_per_customer.png")
+
+    path = os.path.join(outdir, "avg_spend_per_customer.png")
+    plt.savefig(path)
     plt.clf()
+    print(f"Saved: {path}")
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description='Generate charts for purchases')
+    parser.add_argument(
+        '--outdir',
+        default='.',
+        help='Output directory for the charts (PNG)')
+    args = parser.parse_args()
+
+    # 1. Ensure output directory exists
+    os.makedirs(args.outdir, exist_ok=True)
+
+    # 2. Fetch data
     purchases = fetch_purchases()
-    plot_daily_customers(purchases)
-    plot_monthly_sales(purchases)
-    plot_monthly_avg_spend(purchases)
-    print("Charts generated:")
-    print(" - daily_customers.png")
-    print(" - monthly_sales.png")
-    print(" - avg_spend_per_customer.png")
+
+    # 3. Generate and save charts
+    plot_daily_customers(purchases, args.outdir)
+    plot_monthly_sales(purchases, args.outdir)
+    plot_monthly_avg_spend(purchases, args.outdir)
+
+    print("\nAll charts generated successfully.")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
+
 
 
