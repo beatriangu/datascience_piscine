@@ -1,179 +1,139 @@
+> ⚠️ **Heads up!**  
+> This project hasn’t gone through a formal review yet—expect the occasional typo, rogue bug, or mysterious SQL gremlin. Proceed at your own risk 🕵️‍♂️🛠️
+
+# Piscine Data Science
+
+This repository contains all solutions for the **Piscine Data Science** program at 42, organized by days and modules:
+
+- **Day 0 – Data Engineer**  
+  Set up PostgreSQL & pgAdmin, import CSVs into the database.
+
+- **Day 1 – Data Warehouse**  
+  Clean, dedupe, and merge tables (customers & items).
+
+- **Day 2 – Data Analyst (Data Viz)**  
+  Generate charts: pie charts, time series, boxplots, histograms, elbow plots.
+
+- **Day 3 – Clustering**  
+  Use the elbow method and clustering algorithms to segment customers.
+
+---
+
+## 🛠 Prerequisites
+
+- Docker & Docker Compose  
+- Python 3.9+  
+- (Optional) Virtual environment  
+- Install Python dependencies:
+  ```bash
+  pip install -r requirements.txt
+🚀 Quick Start
+Bring up services
 
-📌 Piscine DS: Database Creation
+bash
+Copiar
+Editar
+docker-compose up -d --build
+Run SQL scripts
+Load all three Data Warehouse exercises in one go:
 
-This repository contains my complete solution for the "Creation of a DB" module from the Piscine Data Science program.
+bash
+Copiar
+Editar
+docker-compose exec db psql -U bea -d piscineds \
+  -f Data_Warehouse/ex01/create_customers.sql \
+  -f Data_Warehouse/ex02/remove_duplicates.sql \
+  -f Data_Warehouse/ex03/fusion.sql
+Verify in pgAdmin
+Open http://localhost:8081 (email admin@admin.com / password admin), connect to the db server, and browse the tables.
 
-##Day 0 Data Engineer
+Generate visualizations
+Each Data Viz subfolder has its script:
 
-ex 00 and 01 was just about to create the docker-compose file which runs 2 service, postgres for database and pgadmin to handle and see the db easier
+bash
+Copiar
+Editar
+cd Data_viz/ex00
+python pie.py --input_folder /data/customer --output ./output/pie.png
 
-ex 02 we created our first data table where I quickly realized doing things NOT ON the database make it significantly slower so first I connect to the postgres database and run my sql code directly on the database which made a table creation 7 second instead of 1,5-2 minute
+cd ../ex01
+python chart.py --outdir ./output
 
-ex 03 is the same as 02 but we need to create all the tables from the provided csv files
+cd ../ex02
+python mustache.py --start 2022-10-01 --end 2023-02-28 --outdir ./output
 
-ex 04 we create the items table from the corresponding csv file, technically same as 02
+cd ../ex03
+python Building.py --start 2022-10-01 --end 2023-02-28 --outdir ./output --bins 10
+Clustering
 
+bash
+Copiar
+Editar
+cd Data_viz/ex04
+python elbow.py --outdir ./output
 
-This repository contains my complete solution for the "Creation of a DB" module from the Piscine Data Science program.
+cd ../ex05
+python clustering.py --outdir ./output
+📂 Project Structure
+sql
+Copiar
+Editar
+.
+├── Data_Warehouse
+│   ├── ex01  Create customers table
+│   ├── ex02  Remove duplicates
+│   └── ex03  Merge customers + items
+├── Data_viz
+│   ├── ex00  Pie chart of event_type
+│   ├── ex01  Time-series charts (customers & sales)
+│   ├── ex02  Boxplots (“Mustache”)
+│   ├── ex03  Histograms (frequency & spending)
+│   ├── ex04  Elbow method
+│   └── ex05  Customer clustering
+├── docker-compose.yml
+├── Dockerfile
+├── requirements.txt
+└── README.md   ← **This file**
+📖 Module Descriptions
+Day 0 – Data Engineer
+ex00 & ex01: Docker Compose setup (PostgreSQL + pgAdmin).
 
-🚀 Project Objectives
+ex02: Create tables directly in PostgreSQL from customer CSVs.
 
-The goal of this project is to develop key skills in:
+ex03: Automate table creation for all CSV files, plus items.
 
-Using Docker for isolated environments.
+Day 1 – Data Warehouse
+ex01: Merge monthly CSV data into a single customers table.
 
-Creating and managing databases with PostgreSQL.
+ex02: Remove exact and near-duplicate rows, creating customers_distinct and customers_dedup.
 
-Automating CSV data import using Python.
+ex03: LEFT JOIN customers with items to form customers_full.
 
-Graphical database visualization using pgAdmin.
+Day 2 – Data Analyst (Data Viz)
+ex00: Pie chart of event_type (use all raw data as instructed).
 
-🗂️ Project Structure
+ex01:
 
-Piscine_DS_Project
-├── customer/            # Monthly data CSV files
-│   ├── data_2022_dec.csv
-│   ├── data_2022_nov.csv
-│   ├── data_2022_oct.csv
-│   ├── data_2023_feb.csv
-│   └── data_2023_jan.csv
-├── items/
-│   └── item.csv         # Items CSV file
-├── src/                 # Python scripts
-│   ├── auto_create.py
-│   ├── create_db.py
-│   ├── create_table.py
-│   └── db_utils.py
-├── docker-compose.yml   # Docker services (Postgres + pgAdmin)
-├── Dockerfile           # Docker image for Python app
-├── requirements.txt     # Python dependencies
-└── README.md            # This file
+Daily unique customer counts (line chart).
 
-⚙️ Technologies Used
+Total monthly sales (bar chart).
 
-Docker and Docker Compose
+Average spend per customer per month (area + line chart).
 
-PostgreSQL
+ex02:
 
-Python with the following libraries:
+Boxplot of all purchase prices.
 
-pandas
+Boxplot zoomed to a common range.
 
-psycopg2-binary
+Boxplot of total spending per user with IQR whiskers.
 
-pgAdmin for database visualization
+ex03: Histograms of order frequency and total spending per user.
 
-🔧 Installation and Setup
+ex04: Elbow method to find optimal number of clusters (WSS vs. k).
 
-Make sure you have Docker and Docker Compose installed before proceeding.
+ex05: Apply clustering algorithms to segment customers.
 
-1. Launch Containers
 
-docker-compose up --build -d
 
-2. Create the Database
 
-docker-compose exec app python src/create_db.py
-
-3. Create Tables from CSV files
-
-# Monthly sales tables
-docker-compose exec app python src/create_table.py --folder customer
-
-# Items table
-docker-compose exec app python src/create_table.py --file items/item.csv --table items
-
-🎯 View the Database with pgAdmin
-
-Go to pgAdmin in your browser.
-
-Use the following credentials to log in:
-
-Username (Email)
-
-Password
-
-admin@admin.com
-
-admin
-
-Database Connection Setup
-
-Right-click on Servers → Create → Server.
-
-General: Enter a name, e.g., piscineds.
-
-Connection:
-
-Field
-
-Value
-
-Host name/address
-
-db
-
-Port
-
-5432
-
-Maintenance database
-
-piscineds
-
-Username
-
-bea
-
-Password
-
-mysecretpassword
-
-Now you can inspect all your tables and data.
-
-📋 Terminal Verification
-
-You can also verify your tables via the terminal:
-
-docker-compose exec db psql -U bea -d piscineds -c "\dt"
-
-🎓 Completed Exercises
-
-Exercise
-
-Task
-
-Status
-
-00
-
-Create PostgreSQL database piscineds
-
-✅
-
-01
-
-Visualize DB using pgAdmin
-
-✅
-
-02
-
-Tables from CSV (customer)
-
-✅
-
-03
-
-Automate CSV import (customer)
-
-✅
-
-04
-
-Create items table
-
-✅
-
-✨ Project completed by Beatriz Lamiquiz ✨
-> ⚠️ Note: Due to file size constraints, the original CSV data files are not included in this repository. Please request access separately or use your own test data.
