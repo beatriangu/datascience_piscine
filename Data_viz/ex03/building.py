@@ -81,7 +81,7 @@ def fetch_metrics(start, end):
         raise # Re-raise the exception
 
 
-def plot_histograms(df, outdir): # Removed bins parameter as it's defined internally
+def plot_histograms(df, outdir):
     """
     Dibuja dos histogramas lado a lado con estilo seaborn:
       - purchase_count (Frequency)
@@ -106,6 +106,7 @@ def plot_histograms(df, outdir): # Removed bins parameter as it's defined intern
     yticks_freq = np.arange(0, 60001, 10000) # Keep y-ticks up to 60000
 
     # Define bins to match the desired number of bars (5 bars covering 0-40)
+    # This means 5 equal intervals from 0 to 40, so bin edges are 0, 8, 16, 24, 32, 40
     bins_freq = np.arange(0, 41, 8)
 
 
@@ -135,8 +136,8 @@ def plot_histograms(df, outdir): # Removed bins parameter as it's defined intern
     xticks_monetary = np.arange(0, 201, 50) # Includes 200
 
     # Define specific y-axis limits and ticks as requested (0 to 40000, step 5000), y-axis limit up to 45000 for padding
-    ylim_monetary = (0, 45000)
-    yticks_monetary = np.arange(0, 40001, 5000) # Keep y-ticks up to 40000
+    ylim_monetary = (0, 80000)
+    yticks_monetary = np.arange(0, 80001, 5000) # Keep y-ticks up to 40000
 
     # Define bins to match the desired x-tick intervals (0-50, 50-100, 100-150, 150-200)
     bins_monetary = np.arange(0, 201, 50)
@@ -169,7 +170,6 @@ def main():
     parser.add_argument('--start', default='2022-10-01', help='Start date (YYYY-MM-DD)')
     parser.add_argument('--end', default='2023-02-28', help='End date (YYYY-MM-DD)')
     parser.add_argument('--outdir', default='.', help='Output directory')
-    # Removed --bins argument as binning is now explicitly defined for each plot
     args = parser.parse_args()
 
     os.makedirs(args.outdir, exist_ok=True)
@@ -193,5 +193,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
