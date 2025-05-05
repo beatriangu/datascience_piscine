@@ -1,138 +1,164 @@
-> ⚠️ **Heads up!**  
+> ⚠️ **Heads up!**
 > This project hasn’t gone through a formal review yet—expect the occasional typo, rogue bug, or mysterious SQL gremlin. Proceed at your own risk 🕵️‍♂️🛠️
 
 # Piscine Data Science
 
-This repository contains all solutions for the **Piscine Data Science** program at 42, organized by days and modules:
+This repository contains the solutions for the **Piscine Data Science** program at 42, organized by days and modules.
 
-- **Day 0 – Data Engineer**  
-  Set up PostgreSQL & pgAdmin, import CSVs into the database.
+---
 
-- **Day 1 – Data Warehouse**  
-  Clean, dedupe, and merge tables (customers & items).
+## Modules
 
-- **Day 2 – Data Analyst (Data Viz)**  
-  Generate charts: pie charts, time series, boxplots, histograms, elbow plots.
-
-- **Day 3 – Clustering**  
-  Use the elbow method and clustering algorithms to segment customers.
+* **Day 0 – Data Engineer:** Set up PostgreSQL & pgAdmin, import CSVs into the database.
+* **Day 1 – Data Warehouse:** Clean, deduplicate, and merge tables (customers & items).
+* **Day 2 – Data Analyst (Data Viz):** Generation of data charts and visualizations. Includes histograms, boxplots, time series, pie charts, and **clustering methods (Elbow Method and K-Means)**.
 
 ---
 
 ## 🛠 Prerequisites
 
-- Docker & Docker Compose  
-- Python 3.9+  
-- (Optional) Virtual environment  
-- Install Python dependencies:
-  ```bash
-  pip install -r requirements.txt
-🚀 Quick Start
-Bring up services
+* Docker & Docker Compose
+* Python 3.9+
+* (Optional) Virtual environment
+* Install Python dependencies:
 
-bash
-Copiar
-Editar
-docker-compose up -d --build
-Run SQL scripts
-Load all three Data Warehouse exercises in one go:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-bash
-Copiar
-Editar
-docker-compose exec db psql -U bea -d piscineds \
-  -f Data_Warehouse/ex01/create_customers.sql \
-  -f Data_Warehouse/ex02/remove_duplicates.sql \
-  -f Data_Warehouse/ex03/fusion.sql
-Verify in pgAdmin
-Open http://localhost:8081 (email admin@admin.com / password admin), connect to the db server, and browse the tables.
+---
 
-Generate visualizations
-Each Data Viz subfolder has its script:
+## 🚀 Quick Start
 
-bash
-Copiar
-Editar
-cd Data_viz/ex00
-python pie.py --input_folder /data/customer --output ./output/pie.png
+1.  **Bring up services:**
 
-cd ../ex01
-python chart.py --outdir ./output
+    ```bash
+    docker-compose up -d --build
+    ```
 
-cd ../ex02
-python mustache.py --start 2022-10-01 --end 2023-02-28 --outdir ./output
+2.  **Run SQL scripts:** Load the Data Warehouse exercises.
 
-cd ../ex03
-python Building.py --start 2022-10-01 --end 2023-02-28 --outdir ./output --bins 10
-Clustering
+    ```bash
+    docker-compose exec db psql -U bea -d piscineds \
+      -f Data_Warehouse/ex01/create_customers.sql \
+      -f Data_Warehouse/ex02/remove_duplicates.sql \
+      -f Data_Warehouse/ex03/fusion.sql
+    ```
 
-bash
-Copiar
-Editar
-cd Data_viz/ex04
-python elbow.py --outdir ./output
+3.  **Verify in pgAdmin:** Open `http://localhost:8081` (user `admin@admin.com` / password `admin`), connect to the database server, and explore the tables.
 
-cd ../ex05
-python clustering.py --outdir ./output
-📂 Project Structure
-sql
-Copiar
-Editar
+4.  **Generate visualizations:** Run the Python scripts for each Data Viz exercise.
+
+    ```bash
+    # Navigate to the Data_viz directory first
+    # cd Data_viz/
+
+    # Exercise 00
+    python ex00/pie.py --input_folder /data/customer --output ./ex00/output/pie.png
+
+    # Exercise 01
+    python ex01/chart.py --outdir ./ex01/output
+
+    # Exercise 02
+    python ex02/mustache.py --start 2022-10-01 --end 2023-02-28 --outdir ./ex02/output
+
+    # Exercise 03
+    python ex03/Building.py --start 2022-10-01 --end 2023-02-28 --outdir ./ex03/output
+
+    # Exercise 04 (Elbow Method)
+    python ex04/elbow.py --start 2022-10-01 --end 2023-02-28 --outdir ./ex04/output
+
+    # Exercise 05 (Clustering)
+    python ex05/clustering.py --start 2022-10-01 --end 2023-02-28 --outdir ./ex05/output --n_clusters 4 # Adjust --n_clusters if needed
+    ```
+
+---
+
+## 📂 Project Structure
+
+```sql
 .
-├── Data_Warehouse
-│   ├── ex01  Create customers table
-│   ├── ex02  Remove duplicates
-│   └── ex03  Merge customers + items
-├── Data_viz
-│   ├── ex00  Pie chart of event_type
-│   ├── ex01  Time-series charts (customers & sales)
-│   ├── ex02  Boxplots (“Mustache”)
-│   ├── ex03  Histograms (frequency & spending)
-│   ├── ex04  Elbow method
-│   └── ex05  Customer clustering
+├── Data_Warehouse/
+│   ├── ex01/ # Create customers table
+│   ├── ex02/ # Remove duplicates
+│   └── ex03/ # Merge customers + items
+├── Data_viz/
+│   ├── ex00/ # Pie chart (event_type)
+│   ├── ex01/ # Time-series charts (customers & sales)
+│   ├── ex02/ # Boxplots (“Mustache”)
+│   ├── ex03/ # Histograms (frequency & spending)
+│   ├── ex04/ # Elbow method
+│   └── ex05/ # Customer clustering
 ├── docker-compose.yml
 ├── Dockerfile
 ├── requirements.txt
-└── README.md   ← **This file**
-📖 Module Descriptions
-Day 0 – Data Engineer
-ex00 & ex01: Docker Compose setup (PostgreSQL + pgAdmin).
+└── README.md # This file
+📊 Exercise Descriptions (Day 2 – Data Viz)
+This section describes the Data Visualization exercises (Day 2), including customer clustering, which are part of the Day 2 of the Piscine. Each exercise generates charts that are saved in their respective output/ folder.
 
-ex02: Create tables directly in PostgreSQL from customer CSVs.
+ex00: Pie Chart of event_type
+(Data_viz/ex00/pie.py)
 
-ex03: Automate table creation for all CSV files, plus items.
+Generates a pie chart showing the percentage breakdown of each event type (event_type) in the raw customer data.
 
-Day 1 – Data Warehouse
-ex01: Merge monthly CSV data into a single customers table.
+ex01: Time-Series Charts (Customers & Sales)
+(Data_viz/ex01/chart.py)
 
-ex02: Remove exact and near-duplicate rows, creating customers_distinct and customers_dedup.
+Generates time-series plots analyzing customer behavior and sales over time:
 
-ex03: LEFT JOIN customers with items to form customers_full.
+Daily Unique Customers: A line plot showing the number of unique customers per day.
 
-Day 2 – Data Analyst (Data Viz)
-ex00: Pie chart of event_type (use all raw data as instructed).
+Total Monthly Sales: A bar chart illustrating the sum of total sales per month.
 
-ex01:
+Average Spend per Customer/Month: An area + line chart visualizing the average amount spent per unique customer each month.
 
-Daily unique customer counts (line chart).
+ex02: Boxplots (“Mustache”)
+(Data_viz/ex02/mustache.py)
 
-Total monthly sales (bar chart).
+Creates styled boxplots to visualize the distribution of purchase prices:
 
-Average spend per customer per month (area + line chart).
+Overall Purchase Price Distribution: Displays the distribution of all purchase prices, including outliers.
 
-ex02:
+Purchase Price Distribution (Common Range): Focuses on a common range of purchase prices and typically hides outliers to show the main data concentration.
 
-Boxplot of all purchase prices.
+Basket Price per User: A boxplot representing the distribution of total spending per user. (Note: The specific implementation and filtering for this third boxplot may vary).
 
-Boxplot zoomed to a common range.
+ex03: Histograms of Order Frequency & Spending
+(Data_viz/ex03/Building.py)
 
-Boxplot of total spending per user with IQR whiskers.
+Generates two histograms to show the distribution of customer behavior based on their purchase activity and spending. Data is filtered for users with total spending below 225 A$.
 
-ex03: Histograms of order frequency and total spending per user.
+Order Frequency per User: A histogram showing how many customers made a certain number of purchases.
+Total Spending per User: A histogram showing how many customers spent within specific monetary value ranges.
+ex04: Elbow Method
+(Data_viz/ex04/elbow.py)
 
-ex04: Elbow method to find optimal number of clusters (WSS vs. k).
+Implements the Elbow Method to help determine the optimal number of clusters for customer segmentation. The script calculates the Within-Cluster Sum of Squares (WCSS) for K-Means clustering performed with a range of cluster numbers (k). The generated plot shows WCSS vs. k. The "elbow" point on this curve visually suggests a suitable number of clusters where adding more clusters provides diminishing returns in reducing within-cluster variance.
 
-ex05: Apply clustering algorithms to segment customers.
+ex05: Customer Clustering
+(Data_viz/ex05/clustering.py)
+
+Performs customer segmentation using K-Means clustering based on scaled purchase frequency and total monetary value. It assigns each customer to a cluster and provides visualizations of the resulting customer groups.
+
+The script analyzes the characteristics of each cluster (e.g., average frequency, average monetary value) to allow for meaningful interpretation and naming of the customer segments (e.g., 'New/Inactive Customers', 'Standard Customers', 'Silver Customers', 'Gold/Platinum Customers'). These names are then used in the plots along with specific colors.
+
+Generated visualizations include:
+
+Customer Clusters (Scaled Features): A scatter plot showing customers in the scaled feature space (frequency vs. monetary), colored by their assigned cluster name. Cluster centroids are marked.
+
+Average Characteristics per Cluster: Bar plots illustrating the average original purchase count and average original total spending for each named cluster. These plots help in understanding the typical profile of customers within each segment.
+(Note: The plot linked below shows average cluster characteristics, likely total spending, as represented by 'clustering_centroids.png' in your text).
+(Another bar plot showing average purchase count per cluster is also generated by the script).
+
+Remember to analyze the printed average cluster characteristics after the first run of clustering.py and update the cluster_names_map and cluster_colors_map dictionaries in the script based on your data's specific cluster averages before running it a second time to generate the final plots with correct names and colors.
+
+Project Setup & Execution (Simplified)
+For a simplified setup focused on the Data Viz part after prerequisites are met:
+
+Ensure Database is Running and Loaded: Make sure your PostgreSQL database is accessible and contains the necessary customers_full table populated with data (refer to Day 0 and Day 1 exercises).
+Set Environment Variables: Configure your database connection details as environment variables in your terminal session.
+Run Scripts: Execute the Python scripts for each exercise within the Data_viz directory, providing the necessary arguments.
+(Refer back to the "Quick Start" section for specific commands for each exercise).
 
 
 
