@@ -1,31 +1,11 @@
 #!/usr/bin/env python3
 
-import pandas as pd
 import os
 import sys
+import csv
+import pandas as pd
 
-# Correlation script for ex01
-target_file = os.path.join('..', 'ex00', 'Train_knight.csv')
-if not os.path.isfile(target_file):
-    sys.exit(f"ERROR: no se encontró '{target_file}'")
-
-# Detect delimiter: choose ';' if more semicolons than commas in first non-empty line
-def detect_delimiter(path):
-    with open(path, 'r') as f:
-        for line in f:
-            if line.strip():
-                return ';' if line.count(';') > line.count(',') else ','
-    return ','
-
-delim = detect_delimiter(target_file)
-
-# Read CSV, handling missing header for 'knight' column
-try:
-    df = pd.read_csv(target_file, sep=delim, low_memory=False)
-except Exception as e:
-    sys.exit(f"ERROR leyendo '{target_file}': {e}")
-
-# If 'knight' not in columns, reload skipping first row and assigning names
+# ─── Definición de Features ────────────────────────────────────────────────────
 FEATURES = [
     "Sensitivity", "Hability", "Strength", "Power", "Agility", "Dexterity",
     "Awareness", "Prescience", "Reactivity", "Midi-chlorien", "Slash", "Push",
@@ -33,41 +13,65 @@ FEATURES = [
     "Deflection", "Mass", "Recovery", "Evade", "Stims", "Sprint", "Combo",
     "Delay", "Attunement", "Empowered", "Burst", "Grasping"
 ]
-expected_cols = FEATURES + ['knight']
-if 'knight' not in df.columns or not set(expected_cols).issubset(df.columns):
+
+# ─── Paths ─────────────────────────────────────────────────────────────────────
+BASE_DIR   = os.path.dirname(os.path.abspath(__file__))            # …/ex01
+CSV_PATH   = os.path.normpath(os.path.join(BASE_DIR, '..', 'ex00', 'Train_knight.csv'))
+OUT_PATH   = os.path.join(BASE_DIR, 'Correlation.txt')
+
+# ─── Helpers ───────────────────────────────────────────────────────────────────
+def detect_delimiter(path):
+    """Detecta ',' vs ';' con csv.Sniffer."""
+    with open(path, 'r', newline='') as f:
+        sample = f.read(2048)
     try:
-        df = pd.read_csv(
-            target_file,
-            sep=delim,
-            header=None,
-            skiprows=1,
-            names=expected_cols,
-            low_memory=False
-        )
-    except Exception as e:
-        sys.exit(f"ERROR recargando '{target_file}' con nombres asignados: {e}")
-    # Validate again
-    if 'knight' not in df.columns:
-        sys.exit("ERROR: tras reasignar nombres no se encontró la columna 'knight'.")
+        return csv.Sniffer().sniff(sample, delimiters=[',',';']).delimiter
+    except csv.Error:
+        return ','
 
-# Convert all columns to numeric
-for col in df.columns:
-    df[col] = pd.to_numeric(df[col], errors='coerce')
-# Drop rows without a valid knight value
-df = df.dropna(subset=['knight'])
-
-# Compute correlation
-corr_with_knight = df.corr()['knight']
-# Sort descending
-corr_sorted = corr_with_knight.sort_values(ascending=False)
-
-# Print results
+# ─── Main ──────────────────────────────────────────────────────────────────────
 def main():
-    for feature, value in corr_sorted.items():
-        print(f"{feature:<12} {value:.6f}")
+    if not os.path.isfile(CSV_PATH):
+        sys.exit(f"ERROR: No existe el fichero {CSV_PATH}")
+
+    sep = detect_delimiter(CSV_PATH)
+    cols = FEATURES + ['knight']
+
+    # Leer SIN cabecera, asignar nombres
+    df = pd.read_csv(CSV_PATH, sep=sep, header=None, names=cols)
+
+    print(f"DEBUG: Cargado {os.path.basename(CSV_PATH)} con sep='{sep}'")
+    print("DEBUG: Primeras filas:\n", df.head(3), "\n")
+
+    # Mapear target Jedi->1, Sith->0
+    df['knight'] = (
+        df['knight']
+          .astype(str)
+          .str.strip()
+          .map({'Jedi': 1, 'Sith': 0})
+    )
+
+    # Eliminar filas con NaN en cualquier columna
+    before = len(df)
+    df.dropna(subset=cols, inplace=True)
+    after = len(df)
+    if after < before:
+        print(f"WARNING: Eliminadas {before-after} filas con NaN")
+
+    # Cálculo de correlaciones (Pearson por defecto)
+    corr = df.corr(numeric_only=True)['knight']
+    corr = corr.abs().sort_values(ascending=False)
+
+    # Determinar ancho de la columna de nombres
+    max_feat_len = max(len(feat) for feat in corr.index)
+
+    # Escribir en Correlation.txt con alineación de columnas
+    with open(OUT_PATH, 'w') as f:
+        for feat, val in corr.items():
+            # feat alineado a la izquierda, val a la derecha con 6 decimales
+            f.write(f"{feat:<{max_feat_len}}  {val:>8.6f}\n")
+
+    print(f"Guardado coeficientes en {OUT_PATH}")
 
 if __name__ == '__main__':
     main()
-
-
-
