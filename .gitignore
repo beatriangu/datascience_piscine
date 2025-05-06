@@ -19,3 +19,5 @@ data/
 venv/
 *.log
 __pycache__/
+# Ignorar CSV de ex00
+Data_scientist_1/ex00/*.csv
