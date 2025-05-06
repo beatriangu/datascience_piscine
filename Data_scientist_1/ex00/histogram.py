@@ -104,13 +104,13 @@ def plot_train():
         d0 = df.loc[df['knight']=='Jedi', feat].dropna()
         d1 = df.loc[df['knight']=='Sith', feat].dropna()
         if d0.size:
-            ax.hist(d0, bins=30, color='pink', alpha=0.6)
+            ax.hist(d0, bins=30, color='purple', alpha=0.6)
         if d1.size:
-            ax.hist(d1, bins=30, color='purple', alpha=0.6)
+            ax.hist(d1, bins=30, color='pink', alpha=0.6)
         if not d0.size and not d1.size:
             ax.text(0.5,0.5,'No data',ha='center',va='center',transform=ax.transAxes,fontsize='small',color='gray')
         # Always add legend with fixed labels
-        ax.legend(['Lado Claro / Jedi','Lado Oscuro / Sith'], fontsize='x-small')
+        ax.legend(['Jedi','Sith'], fontsize='x-small')
 
     plot_grid(df, draw_train,
               'Distribución por clase de cada skill (Train_knight.csv)',
