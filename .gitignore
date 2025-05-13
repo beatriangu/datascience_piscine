@@ -1,23 +1,26 @@
-# Python
+# Byte-compiled / optimized files
 __pycache__/
 *.py[cod]
+*$py.class
 
-# Entornos virtuales
+# Virtual environments
 .venv/
 env/
 venv/
 
-# Archivos del sistema
-.DS_Store
-Thumbs.db
+# Log files
+*.log
 
-# PostgreSQL y archivos pesados
+# Heavy data files and exercise CSVs
 data/
 customer/*.csv
 items/*.csv
-data/
-venv/
-*.log
-__pycache__/
-# Ignorar CSV de ex00
 Data_scientist_1/ex00/*.csv
+
+# Script outputs (e.g., generated plots, reports)
+*/output/
+
+# IDE and OS artifacts
+.vscode/
+.DS_Store
+Thumbs.db

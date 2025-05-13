@@ -1,95 +1,100 @@
-⚠️ Heads up!
+# Piscine Data Science
 
-This project hasn’t gone through a formal review yet—expect the occasional typo, rogue bug, or mysterious SQL gremlin. Proceed at your own risk 🕵️‍♂️🛠️
+⚠️ This project has not undergone a formal review—there may be typos, bugs, or inconsistencies. Use at your own risk.
 
-Piscine Data Science
+This repository contains the solutions for the **Piscine Data Science** program at 42, organized by day and module.
 
-This repository contains the solutions for the Piscine Data Science program at 42, organized by days and modules.
+## 📂 Project Structure
+```
+.
+├── Data_Warehouse/            # Day 1: SQL / ETL
+│   ├── ex01/                  # Create customers table
+│   ├── ex02/                  # Remove duplicate entries
+│   └── ex03/                  # Merge tables
+├── Data_viz/                  # Day 2: Data Visualization
+│   ├── ex00/                  # Pie chart
+│   ├── ex01/                  # Time-series charts
+│   ├── ex02/                  # Boxplots (“Mustache”)
+│   ├── ex03/                  # Histograms (orders & spending)
+│   ├── ex04/                  # Elbow Method
+│   └── ex05/                  # K-Means clustering
+├── Data_scientist_1/          # Day 3: Statistics & Preprocessing
+│   ├── ex00/                  # Knights’ skills histograms
+│   ├── ex01/                  # Correlation analysis
+│   ├── ex02/                  # Scatter plots
+│   ├── ex03/                  # Standardization (Z-score)
+│   ├── ex04/                  # Normalization (Min–Max)
+│   └── ex05/                  # Train/Validation split
+├── Data_scientist_2/          # Day 4: Modeling & Prediction
+│   ├── ex00/                  # Confusion matrix
+│   ├── ex01/                  # Correlation heatmap
+│   ├── ex02/                  # PCA scree plot
+│   ├── ex03/                  # Feature selection (VIF)
+│   ├── ex04/                  # Decision tree & random forest
+│   ├── ex05/                  # KNN (optimal k search)
+│   └── ex06/                  # Voting classifier
+├── docker-compose.yml         # Docker compose configuration
+├── Dockerfile                 # Docker image build instructions
+├── requirements.txt           # Python dependencies
+├── .gitignore                 # Files and directories to ignore in Git
+└── README.md                  # Project overview (this file)
+```
 
-Modules
+## 🛠 Prerequisites
+- Docker & Docker Compose
+- Python 3.9 or higher
+- (Optional) Virtual environment
 
-Day 0 – Data Engineer: Set up PostgreSQL & pgAdmin, import CSVs.
-
-Day 1 – Data Warehouse: Clean, deduplicate, and merge tables (customers & items).
-
-Day 2 – Data Analyst (Viz): Charts and visualizations (histograms, boxplots, time series, pie charts, Elbow Method, K-Means).
-
-Day 3 – Data Scientist: Machine learning and model development (ex00: Histogram).
-
-🛠 Prerequisites
-
-Docker & Docker Compose
-
-Python 3.9+
-
-(Optional) Virtual environment
-
-Install dependencies:
-
+Install the required Python packages:
+```bash
 pip install -r requirements.txt
+```
 
-🚀 Quick Start
+## 🚀 Quick Start
 
-Start services
-
+1. **Start Docker services**
+   ```bash
 docker-compose up -d --build
+```
 
-Run Data Warehouse SQL
-
+2. **Initialize the Data Warehouse**
+   ```bash
 docker-compose exec db psql -U bea -d piscineds \
   -f Data_Warehouse/ex01/create_customers.sql \
   -f Data_Warehouse/ex02/remove_duplicates.sql \
   -f Data_Warehouse/ex03/fusion.sql
+```
+   Access pgAdmin at http://localhost:8081 (user: admin@admin.com / pass: admin)
 
-Verify in pgAdmin: http://localhost:8081 (admin@admin.com / admin)
-
-Run Data Viz scripts (Day 2)
-
+3. **Run Day 2 Visualization Scripts**
+   ```bash
 cd Data_viz
 python ex00/pie.py --input_folder /data/customer --output ./ex00/output/pie.png
 python ex01/chart.py --outdir ./ex01/output
-python ex02/mustache.py --start 2022-10-01 --end 2023-02-28 --outdir ./ex02/output
-python ex03/Building.py --start 2022-10-01 --end 2023-02-28 --outdir ./ex03/output
-python ex04/elbow.py --start 2022-10-01 --end 2023-02-28 --outdir ./ex04/output
-python ex05/clustering.py --start 2022-10-01 --end 2023-02-28 --outdir ./ex05/output --n_clusters 4
+# Repeat for ex02–ex05
+```
 
-Run Data Scientist script (Day 3)
-
+4. **Run Day 3 Preprocessing Scripts**
+   ```bash
 cd ../Data_scientist_1/ex00
 python histogram.py --train Train_knight.csv --test Test_knight.csv --output Histogram.png
+# Repeat for ex01–ex05
+```
 
-📂 Project Structure
+5. **Run Day 4 Modeling Scripts**
+   ```bash
+cd ../../Data_scientist_2
+python ex00/Confusion_Matrix.py predictions.txt truth.txt
+python ex01/Heatmap.py --input data.csv --output heatmap.png
+python ex02/variances.py --input Train_knight.csv --output variances.png
+python ex03/Feature_Selection.py --train Train_knight.csv --test Test_knight.csv
+python ex04/Tree.py Train_knight.csv Test_knight.csv --output Tree.txt
+python ex05/KNN.py Train_knight.csv Test_knight.csv --output KNN.txt
+python ex06/democracy.py Train_knight.csv Test_knight.csv --output Voting.txt
+```
 
-.
-├── Data_Warehouse/          # Day 1
-│   ├── ex01/                # Create customers table
-│   ├── ex02/                # Remove duplicates
-│   └── ex03/                # Merge tables
-├── Data_viz/                # Day 2
-│   ├── ex00/                # Pie chart
-│   ├── ex01/                # Time-series charts
-│   ├── ex02/                # Boxplots (“Mustache”)
-│   ├── ex03/                # Histograms (orders & spending)
-│   ├── ex04/                # Elbow Method
-│   └── ex05/                # K-Means Clustering
-├── Data_scientist_1/        # Day 3
-│   └── ex00/                # Histogram (knights’ skills & target)
-├── docker-compose.yml
-├── Dockerfile
-├── requirements.txt
-└── README.md
 
-Day 2 – Data Viz Exercises
 
-ex00: Pie Chart – Breakdown of event_type (Data_viz/ex00/pie.py).ex01: Time-Series – Daily unique customers, monthly sales, avg. spend (ex01/chart.py).ex02: Boxplots – Price distributions (ex02/mustache.py).ex03: Histograms – Order frequency & spending (ex03/Building.py).ex04: Elbow Method – WCSS vs. K clusters (ex04/elbow.py).ex05: K-Means Clustering – Customer segmentation (ex05/clustering.py).
-
-Day 3 – Data Scientist (ex00: Histogram)
-
-Directory: Data_scientist_1/ex00/
-
-Description: Generate a combined histogram of knights’ features (skills) and the target “knight” (Force side) using Train_knight.csv and Test_knight.csv.
-
-Output: Save figure as Histogram.*.
 
 
 

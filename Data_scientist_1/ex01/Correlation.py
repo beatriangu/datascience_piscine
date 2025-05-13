@@ -5,7 +5,7 @@ import sys
 import csv
 import pandas as pd
 
-# ─── Definición de Features ────────────────────────────────────────────────────
+# ─── Definition of feature columns ──────────────────────────────────────────────
 FEATURES = [
     "Sensitivity", "Hability", "Strength", "Power", "Agility", "Dexterity",
     "Awareness", "Prescience", "Reactivity", "Midi-chlorien", "Slash", "Push",
@@ -15,35 +15,42 @@ FEATURES = [
 ]
 
 # ─── Paths ─────────────────────────────────────────────────────────────────────
-BASE_DIR   = os.path.dirname(os.path.abspath(__file__))            # …/ex01
-CSV_PATH   = os.path.normpath(os.path.join(BASE_DIR, '..', 'ex00', 'Train_knight.csv'))
-OUT_PATH   = os.path.join(BASE_DIR, 'Correlation.txt')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # …/ex01
+CSV_PATH = os.path.normpath(os.path.join(BASE_DIR, '..', 'ex00', 'Train_knight.csv'))
+OUT_PATH = os.path.join(BASE_DIR, 'Correlation.txt')
 
-# ─── Helpers ───────────────────────────────────────────────────────────────────
+# ─── Helper to detect CSV delimiter ─────────────────────────────────────────────
 def detect_delimiter(path):
-    """Detecta ',' vs ';' con csv.Sniffer."""
+    """Detects whether the CSV uses comma or semicolon as delimiter."""
     with open(path, 'r', newline='') as f:
         sample = f.read(2048)
     try:
-        return csv.Sniffer().sniff(sample, delimiters=[',',';']).delimiter
+        return csv.Sniffer().sniff(sample, delimiters=[',', ';']).delimiter
     except csv.Error:
         return ','
 
-# ─── Main ──────────────────────────────────────────────────────────────────────
+# ─── Main routine ───────────────────────────────────────────────────────────────
 def main():
+    # Check that the input file exists
     if not os.path.isfile(CSV_PATH):
-        sys.exit(f"ERROR: No existe el fichero {CSV_PATH}")
+        sys.exit(f"ERROR: File not found: {CSV_PATH}")
 
     sep = detect_delimiter(CSV_PATH)
     cols = FEATURES + ['knight']
 
-    # Leer SIN cabecera, asignar nombres
-    df = pd.read_csv(CSV_PATH, sep=sep, header=None, names=cols)
+    # Read CSV, detect whether it has a header row
+    df = pd.read_csv(CSV_PATH, sep=sep)
+    if 'knight' not in df.columns:
+        # No header present: read without header, assign column names, skip the first data row
+        df = pd.read_csv(CSV_PATH, sep=sep, header=None, names=cols, skiprows=1)
+    else:
+        # Header present: keep only the columns we care about
+        df = df[cols]
 
-    print(f"DEBUG: Cargado {os.path.basename(CSV_PATH)} con sep='{sep}'")
-    print("DEBUG: Primeras filas:\n", df.head(3), "\n")
+    print(f"DEBUG: Loaded {os.path.basename(CSV_PATH)} with sep='{sep}'")
+    print("DEBUG: First rows:\n", df.head(3), "\n")
 
-    # Mapear target Jedi->1, Sith->0
+    # Map target: 'Jedi' -> 1, 'Sith' -> 0
     df['knight'] = (
         df['knight']
           .astype(str)
@@ -51,27 +58,39 @@ def main():
           .map({'Jedi': 1, 'Sith': 0})
     )
 
-    # Eliminar filas con NaN en cualquier columna
-    before = len(df)
-    df.dropna(subset=cols, inplace=True)
-    after = len(df)
-    if after < before:
-        print(f"WARNING: Eliminadas {before-after} filas con NaN")
+    # Convert feature columns to numeric; invalid parsing becomes NaN
+    df[FEATURES] = df[FEATURES].apply(pd.to_numeric, errors='coerce')
 
-    # Cálculo de correlaciones (Pearson por defecto)
-    corr = df.corr(numeric_only=True)['knight']
-    corr = corr.abs().sort_values(ascending=False)
+    # Fill NaN in feature columns with each column's mean
+    means = df[FEATURES].mean()
+    df[FEATURES] = df[FEATURES].fillna(means)
 
-    # Determinar ancho de la columna de nombres
+    # If any 'knight' values are NaN, fill them with the mode
+    if df['knight'].isna().any():
+        mode_knight = df['knight'].mode()
+        if not mode_knight.empty:
+            df['knight'] = df['knight'].fillna(mode_knight[0])
+
+    # Verify that no NaNs remain
+    total_after = df.isna().sum().sum()
+    if total_after > 0:
+        print(f"WARNING: {total_after} NaN values remain after imputation")
+
+    # Compute Pearson correlations and take absolute values
+    corr = df.corr(numeric_only=True)['knight'].abs().sort_values(ascending=False)
+
+    # Determine width for feature name column alignment
     max_feat_len = max(len(feat) for feat in corr.index)
 
-    # Escribir en Correlation.txt con alineación de columnas
+    # Write results to output file with aligned formatting
     with open(OUT_PATH, 'w') as f:
         for feat, val in corr.items():
-            # feat alineado a la izquierda, val a la derecha con 6 decimales
             f.write(f"{feat:<{max_feat_len}}  {val:>8.6f}\n")
 
-    print(f"Guardado coeficientes en {OUT_PATH}")
+    print(f"Saved correlation coefficients to {OUT_PATH}")
 
 if __name__ == '__main__':
     main()
+
+
+

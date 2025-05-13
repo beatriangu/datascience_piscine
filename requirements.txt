@@ -1,10 +1,21 @@
-numpy<2
-pandas==2.2.3
-psycopg2-binary==2.9.10
-python-dateutil==2.9.0.post0
-pytz==2025.2
-six==1.17.0
-tzdata==2025.2
-matplotlib==3.7.2
-SQLAlchemy==2.0.18
+# Core numerical & data libraries
+numpy<2                      # keep NumPy in the 1.x series for best compatibility
+pandas==2.2.3                # fixed to the version you’ve tested against
+
+# Database / ORM
+psycopg2-binary==2.9.10      # PostgreSQL driver
+SQLAlchemy==2.0.18           # Database toolkit & ORM
+
+# Date/time handling
+python-dateutil>=2.9         # parsing & relativedelta
+pytz>=2025.2                 # timezone definitions
+tzdata>=2025.2               # up-to-date tz database
+
+# Machine learning & plotting
+scikit-learn>=1.0,<2         # classifiers, pipelines, metrics
+matplotlib==3.7.2            # plotting library
+# seaborn>=0.11              # (optional) for higher-level statistical charts
+
+# Compatibility helpers
+six==1.17.0                  # Python 2/3 compatibility layer
 
