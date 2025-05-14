@@ -16,25 +16,22 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def parse_args():
-    # Determine script directory and default CSV path in sibling Data_scientist_1/ex00
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    base_dir = os.path.abspath(os.path.join(script_dir, '..', '..'))  # .../piscine_datascience
-    default_csv = os.path.normpath(os.path.join(base_dir, 'Data_scientist_1', 'ex00', 'Train_knight.csv'))
+    base_dir = os.path.abspath(os.path.join(script_dir, '..', '..'))
+    default_csv = os.path.normpath(
+        os.path.join(base_dir, 'Data_scientist_1', 'ex00', 'Train_knight.csv')
+    )
     default_png = os.path.join(script_dir, 'heatmap.png')
 
     parser = argparse.ArgumentParser(
         description="Exercise ex01: compute and display a heatmap of feature correlations"
     )
     parser.add_argument(
-        '--input-csv',
-        dest='input_csv',
-        default=default_csv,
+        '--input-csv', dest='input_csv', default=default_csv,
         help=f"Path to input CSV (default: {default_csv})"
     )
     parser.add_argument(
-        '--save-png',
-        dest='pngpath',
-        default=default_png,
+        '--save-png', dest='pngpath', default=default_png,
         help=f"Path to save the heatmap PNG (default: {default_png})"
     )
     return parser.parse_args()
@@ -52,38 +49,38 @@ def main():
     print(f"Loading data from: {args.input_csv}")
     df = load_data(args.input_csv)
 
-    # Filter numeric columns
+    # Convertir la columna 'knight' a valores numéricos
+    if 'knight' in df.columns:
+        mapping = {'Jedi': 1.0, 'Sith': -1.0}
+        df['knight'] = df['knight'].map(mapping)
+        if df['knight'].isnull().any():
+            sys.exit("Error: Se encontraron valores en 'knight' que no son 'Jedi' o 'Sith'.")
+
+    # Filtrar columnas numéricas
     numeric_df = df.select_dtypes(include=[np.number])
     if numeric_df.shape[1] < 2:
-        sys.exit("Error: dataset must contain at least two numeric columns.")
+        sys.exit("Error: dataset must contain al menos dos columnas numéricas.")
 
-    # Compute correlation matrix
+    # Calcular matriz de correlación
     corr = numeric_df.corr(method='pearson')
 
-    # Plot heatmap
-    plt.figure(figsize=(10, 8))
-    # Set overall font sizing (optional)
-    sns.set(font_scale=1.0)
-    heatmap = sns.heatmap(
-        corr,
-        annot=True,
-        fmt=".2f",
-        annot_kws={"size": 5},  # smaller annotation font
-        cmap='coolwarm',
-        vmin=-1,
-        vmax=1,
-        linewidths=0.30,
-        cbar_kws={"shrink": 0.8}
-    )
-    heatmap.set_title('Heatmap of Pearson Correlation Coefficients', pad=16)
+    # Crear heatmap con colormap 'Reds_r'
+    plt.figure(figsize=(10, 7))
+    sns.heatmap(corr, annot=False, cmap='Reds_r')
     plt.tight_layout()
 
-    # Save figure
-    plt.savefig(args.pngpath, dpi=150)
+    # Guardar figura en PNG
+    plt.savefig(args.pngpath, format='png', bbox_inches='tight', pad_inches=0, dpi=500)
     print(f"Heatmap saved to: {args.pngpath}")
 
-if __name__ == '__main__':
-    main()
+        # Mostrar figura sin bloquear y cerrar automáticamente
+    plt.show(block=False)
+    plt.pause(1)  # mostrar brevemente la ventana
+    plt.close()
+
+
+
+
 
 
 
