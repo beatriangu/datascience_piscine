@@ -1,18 +1,18 @@
-# Data Science Foundations — Monorepo
+# Data Science Foundations — End-to-End Project
 
-This repository is a curated **data science foundations monorepo**, covering the full progression from database setup to classical machine learning models.
+This repository is a **Data Science Foundations project** covering the full data lifecycle, from
+database initialization and data warehousing to exploratory analysis and classical machine learning models.
 
-It is structured by **real-world data roles**, reflecting how data projects evolve in practice: from data engineering and warehousing, through analysis, to modeling and evaluation.
+The project is structured by **real-world data roles**, reflecting how data products are built in practice:
+from data engineering and SQL pipelines to data analysis, feature engineering, and modeling.
 
-The focus of this repository is on **code quality, data workflows, and reasoning**, rather than on proprietary datasets or pre-generated outputs.
-
-⚠️ **Note**  
-This repository reflects an evolving learning process and has been curated for public presentation.  
-While the code is functional and structured, minor inconsistencies or edge cases may still exist.
+> ⚠️ **Disclaimer**  
+> This repository reflects a learning and consolidation process.  
+> The code is functional and structured for clarity and reproducibility, but minor edge cases may still exist.
 
 ---
 
-## Repository Structure
+## Project Structure
 
 ```text
 .
@@ -29,94 +29,114 @@ While the code is functional and structured, minor inconsistencies or edge cases
 ├── docker-compose.yml
 ├── Makefile
 └── requirements.txt
-Each module represents a distinct stage in a typical data lifecycle.
+Each module represents a distinct stage of the data lifecycle.
 
 Modules Overview
 00 — Data Engineer
-Database setup and infrastructure foundations
+Database foundations and infrastructure
 
-Database initialization scripts
+PostgreSQL initialization
 
-Table creation and schema design
+Schema creation
 
-Supporting utilities for automated setup
+Data availability verification
 
-Focus: reproducible environments and reliable data foundations.
+Reproducible environments (Docker-based)
+
+Focus: reliable data foundations and infrastructure setup.
 
 01 — Data Warehouse
-SQL-based data preparation and consolidation
+SQL-based data preparation
 
-Structured data ingestion
+Monthly data ingestion
+
+Dataset consolidation
 
 Deduplication strategies
 
-Dataset fusion into a single source of truth
+Data fusion into analysis-ready tables
 
-Focus: transforming raw data into analysis-ready datasets using SQL.
+Focus: transforming raw data into a single, consistent source of truth.
 
 02 — Data Analyst
-Exploratory analysis and visualization logic
+Exploratory analysis and visualization
 
-Aggregations and descriptive metrics
+Distribution analysis
 
-Visualization scripts (charts, distributions, clustering logic)
+Boxplots and outlier detection
 
-Analytical reasoning through code
+Histograms and frequency analysis
 
-Focus: understanding data behavior and extracting insights.
+Clustering preparation and elbow method
+
+Focus: understanding data behavior and extracting insights through visualization.
 
 03 — Data Scientist I
 Feature analysis and preprocessing
 
-Feature comparison and correlation
+Feature distributions
+
+Class comparisons (Jedi vs Sith)
 
 Normalization and standardization
 
-Dataset preparation for modeling
+Train/test dataset preparation
 
-Focus: preparing clean, meaningful features for machine learning.
+Focus: preparing clean and meaningful features for modeling.
 
 04 — Data Scientist II
-Classical machine learning models and evaluation
+Modeling and evaluation
+
+Confusion matrices
+
+Correlation heatmaps
+
+Feature selection
 
 Decision trees
 
-k-nearest neighbors (KNN)
+KNN and ensemble voting
 
-Feature selection techniques
+Focus: model behavior, interpretability, and evaluation logic.
 
-Ensemble and voting strategies
+Visual Insights
+Below are selected visual outputs that summarize key analytical insights from the project.
 
-Model evaluation logic
+Purchase Price Distribution
+This boxplot shows the overall distribution of purchase prices, highlighting a strong right skew
+and the presence of significant outliers.
 
-Focus: model behavior, interpretability, and evaluation pipelines.
+
+User Behavior Analysis
+These histograms analyze user purchasing behavior for users whose total spending is below 225 A$:
+
+Left: Purchase frequency per user
+
+Right: Total spending per user
+
+They reveal that most users make few purchases and spend relatively small amounts, with a long-tail distribution.
+
 
 Design Decisions
-Datasets, subjects, and evaluation artifacts are intentionally excluded
-This repository showcases data workflows, logic, and structure rather than academic or proprietary datasets.
+Datasets, subjects, and evaluation PDFs are excluded
+This repository focuses on workflows and logic rather than academic artifacts.
 
-Generated outputs (plots, predictions, truth files) are not versioned
-Outputs can be reproduced by running the corresponding scripts when appropriate.
+Generated outputs are not versioned systematically
+Plots and predictions can be regenerated by executing the scripts.
 
 Clear separation of concerns
-Each module focuses on a single stage of the data lifecycle, following a role-based progression.
+Each module maps to a real data role and a specific responsibility.
 
-Execution & Reproducibility
-This repository does not include original datasets or generated outputs.
-
-Most scripts are designed to be executed independently once the required data is available.
-The emphasis is on reproducible logic and workflow design, not on reproducing exact numerical results.
-
-When applicable:
+Reproducibility & Execution
+This project does not include proprietary datasets.
 
 SQL scripts can be executed against a PostgreSQL instance
 
 Python scripts expect CSV inputs with documented or inferable schemas
 
-Visualizations and predictions can be regenerated by running the scripts
+Visualizations and predictions are reproducible by running the scripts
 
-Setup
-Python environment
+Python Environment
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -131,11 +151,13 @@ a reference for structured data workflows
 
 a demonstration of progression from data engineering to data science
 
-It reflects a practical, production-aware approach to working with data.
+It reflects a production-aware and role-oriented approach to working with data.
 
 Background
-This project was originally developed in an academic setting and later refactored and curated
+This project was originally developed in an academic context and later refactored and curated
 to meet professional and public portfolio standards.
+
+
 
 
 

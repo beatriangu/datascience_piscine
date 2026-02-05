@@ -73,3 +73,6 @@ datascience_4/
 # (extra: si guardas enunciados con otros nombres)
 **/*subject*
 
+# Allow only the two key images used in the root README
+!02_data_analyst/ex02/mustache_overall.png
+!02_data_analyst/ex03/building_histograms.png
