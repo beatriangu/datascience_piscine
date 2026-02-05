@@ -1,74 +1,74 @@
-# Makefile para gestionar servicios con Docker Compose
+# Makefile to manage services with Docker Compose
 
-# Archivo de configuración de Docker Compose
+# Docker Compose configuration file
 docker_compose_file := docker-compose.yml
 
-# Variables de entorno
+# Environment variables
 export POSTGRES_USER := bea
 export POSTGRES_PASSWORD := mysecretpassword
 export POSTGRES_DB := piscineds
 
-# --- Levantar todos los servicios (db, app, pgadmin) ---
+# --- Start all services (db, app, pgadmin) ---
 .PHONY: up
 up:
-	@echo "🚀 Levantando todos los servicios con Docker Compose"
+	@echo "🚀 Starting all services with Docker Compose"
 	docker-compose -f $(docker_compose_file) up -d
 
-# --- Detener todos los servicios ---
+# --- Stop all services ---
 .PHONY: down
 down:
-	@echo "🛑 Deteniendo todos los servicios"
+	@echo "🛑 Stopping all services"
 	docker-compose -f $(docker_compose_file) stop
 
-# --- Limpiar contenedores, redes y volúmenes ---
+# --- Remove containers, networks, and volumes ---
 .PHONY: clean
 clean:
-	@echo "🧹 Limpiando contenedores, redes y volúmenes"
+	@echo "🧹 Cleaning containers, networks, and volumes"
 	docker-compose -f $(docker_compose_file) down -v --remove-orphans
 
-# --- Reiniciar todos los servicios ---
+# --- Restart all services ---
 .PHONY: restart
 restart: clean up
-	@echo "🔄 Reiniciando todos los servicios"
+	@echo "🔄 Restarting all services"
 
-# --- Acceder a la terminal de PostgreSQL ---
+# --- Open PostgreSQL shell ---
 .PHONY: db-shell
 db-shell:
-	@echo "🛢️  Conectando a PostgreSQL"
+	@echo "🛢️  Connecting to PostgreSQL"
 	docker-compose -f $(docker_compose_file) exec db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
 
-# --- Ejecutar script SQL ---
+# --- Execute SQL script ---
 .PHONY: run-sql
 run-sql:
-	@echo "📜 Ejecutando script SQL"
+	@echo "📜 Executing SQL script"
 	docker-compose -f $(docker_compose_file) exec -T db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -c "$(shell cat fusion.sql)"
 
-# --- Levantar solo pgAdmin ---
+# --- Start only pgAdmin ---
 .PHONY: pgadmin
 pgadmin:
-	@echo "📊 Levantando pgAdmin"
+	@echo "📊 Starting pgAdmin"
 	docker-compose -f $(docker_compose_file) up -d pgadmin
 
-# --- Acceder al shell de la aplicación ---
+# --- Open application container shell ---
 .PHONY: shell
 shell:
-	@echo "🐚 Abriendo shell en contenedor 'app'"
+	@echo "🐚 Opening shell in 'app' container"
 	docker-compose -f $(docker_compose_file) exec app sh
 
-# --- Ejecutar análisis Mustache ---
+# --- Run Mustache analysis ---
 .PHONY: mustache
 mustache:
-	@echo "📊 Generando gráficos Mustache"
+	@echo "📊 Generating Mustache plots"
 	docker-compose -f $(docker_compose_file) exec app python mustache.py
 
-# --- Mostrar logs ---
+# --- Show logs ---
 .PHONY: logs
 logs:
-	@echo "📋 Mostrando logs"
+	@echo "📋 Showing logs"
 	docker-compose -f $(docker_compose_file) logs -f
 
-# --- Verificar estado de la DB ---
+# --- Check database status ---
 .PHONY: check-db
 check-db:
-	@echo "🔍 Verificando estado de PostgreSQL"
+	@echo "🔍 Checking PostgreSQL status"
 	docker-compose -f $(docker_compose_file) exec db pg_isready

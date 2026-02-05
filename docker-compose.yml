@@ -1,5 +1,3 @@
-
-
 services:
   db:
     image: postgres:13
@@ -12,9 +10,9 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./db_init:/docker-entrypoint-initdb.d      # Scripts de inicialización
-      - ./data/customer:/data/customer             # CSVs de clientes (singular)
-      - ./data/items:/data/items                   # CSVs de ítems
+      - ./db_init:/docker-entrypoint-initdb.d      # Initialization scripts
+      - ./data/customer:/data/customer             # Customer CSVs (singular folder name)
+      - ./data/items:/data/items                   # Items CSVs
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U bea -d piscineds"]
       interval: 5s
@@ -29,8 +27,8 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-      - ./scripts/etl:/app/etl                     # Scripts ETL
-      - ./scripts/viz:/app/viz                     # Scripts Data Viz
+      - ./scripts/etl:/app/etl                     # ETL scripts
+      - ./scripts/viz:/app/viz                     # Data Viz scripts
     depends_on:
       db:
         condition: service_healthy
@@ -58,6 +56,7 @@ services:
 volumes:
   pgdata:
   pgadmin_data:
+
 
 
 

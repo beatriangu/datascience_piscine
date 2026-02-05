@@ -1,20 +1,16 @@
-# Data Science Foundations — End-to-End Project
+Data Science Foundations — End-to-End Project
 
-This repository is a **Data Science Foundations project** covering the full data lifecycle, from
+This repository is a Data Science Foundations project covering the full data lifecycle, from
 database initialization and data warehousing to exploratory analysis and classical machine learning models.
 
-The project is structured by **real-world data roles**, reflecting how data products are built in practice:
+The project is structured by real-world data roles, reflecting how data products are built in practice:
 from data engineering and SQL pipelines to data analysis, feature engineering, and modeling.
 
-> ⚠️ **Disclaimer**  
-> This repository reflects a learning and consolidation process.  
-> The code is functional and structured for clarity and reproducibility, but minor edge cases may still exist.
+⚠️ Disclaimer
+This repository reflects a learning and consolidation process.
+The code is functional and structured for clarity and reproducibility, but minor edge cases may still exist.
 
----
-
-## Project Structure
-
-```text
+Project Structure
 .
 ├── 00_data_engineer
 ├── 01_data_warehouse
@@ -29,10 +25,13 @@ from data engineering and SQL pipelines to data analysis, feature engineering, a
 ├── docker-compose.yml
 ├── Makefile
 └── requirements.txt
+
+
 Each module represents a distinct stage of the data lifecycle.
 
 Modules Overview
 00 — Data Engineer
+
 Database foundations and infrastructure
 
 PostgreSQL initialization
@@ -46,6 +45,7 @@ Reproducible environments (Docker-based)
 Focus: reliable data foundations and infrastructure setup.
 
 01 — Data Warehouse
+
 SQL-based data preparation
 
 Monthly data ingestion
@@ -59,6 +59,7 @@ Data fusion into analysis-ready tables
 Focus: transforming raw data into a single, consistent source of truth.
 
 02 — Data Analyst
+
 Exploratory analysis and visualization
 
 Distribution analysis
@@ -72,6 +73,7 @@ Clustering preparation and elbow method
 Focus: understanding data behavior and extracting insights through visualization.
 
 03 — Data Scientist I
+
 Feature analysis and preprocessing
 
 Feature distributions
@@ -85,6 +87,7 @@ Train/test dataset preparation
 Focus: preparing clean and meaningful features for modeling.
 
 04 — Data Scientist II
+
 Modeling and evaluation
 
 Confusion matrices
@@ -100,24 +103,27 @@ KNN and ensemble voting
 Focus: model behavior, interpretability, and evaluation logic.
 
 Visual Insights
+
 Below are selected visual outputs that summarize key analytical insights from the project.
 
 Purchase Price Distribution
+
 This boxplot shows the overall distribution of purchase prices, highlighting a strong right skew
 and the presence of significant outliers.
 
-
 User Behavior Analysis
+
 These histograms analyze user purchasing behavior for users whose total spending is below 225 A$:
 
 Left: Purchase frequency per user
 
 Right: Total spending per user
 
-They reveal that most users make few purchases and spend relatively small amounts, with a long-tail distribution.
-
+They reveal that most users make few purchases and spend relatively small amounts,
+with a long-tail distribution.
 
 Design Decisions
+
 Datasets, subjects, and evaluation PDFs are excluded
 This repository focuses on workflows and logic rather than academic artifacts.
 
@@ -128,6 +134,7 @@ Clear separation of concerns
 Each module maps to a real data role and a specific responsibility.
 
 Reproducibility & Execution
+
 This project does not include proprietary datasets.
 
 SQL scripts can be executed against a PostgreSQL instance
@@ -140,9 +147,12 @@ Python Environment
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+
 Docker (optional)
 docker compose up --build
+
 Purpose
+
 This repository serves as:
 
 a technical portfolio of data foundations
@@ -154,6 +164,7 @@ a demonstration of progression from data engineering to data science
 It reflects a production-aware and role-oriented approach to working with data.
 
 Background
+
 This project was originally developed in an academic context and later refactored and curated
 to meet professional and public portfolio standards.
 

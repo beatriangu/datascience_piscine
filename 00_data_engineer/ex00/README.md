@@ -1,53 +1,64 @@
-ex00 – Database Visualization
+# ex00 — Database Verification
 
-In this exercise, there are no code files to submit. You only need to verify that the piscineds database is accessible and can be viewed in pgAdmin 4.
+This exercise focuses on **verifying database accessibility and structural integrity**
+after the initial data engineering setup has been completed.
 
-Steps to Complete the Exercise
+No application code is implemented at this stage.  
+The goal is to confirm that the database is correctly initialized, reachable,
+and populated with the expected tables.
 
-Launch pgAdmin
+---
 
-macOS GUI: Run make pgadmin-native to open the pgAdmin 4 application.
+## Objective
 
-Docker Compose: Run make pgadmin and open http://localhost:8080 in your browser.
+- Verify connectivity to the PostgreSQL database
+- Inspect schemas and table structures
+- Ensure ingested data is visible and consistent
+- Validate the data foundation before downstream processing
 
-Log in to pgAdmin
+---
 
-Email: admin@admin.com
+## What Is Verified
 
-Password: admin
+The following aspects are checked:
 
-Configure the PostgreSQL Server Connection
+- Database availability
+- Correct database name and active schema
+- Presence of expected tables
+- Successful data ingestion from previous steps
 
-Name (Server): piscineds
+This step acts as a **sanity check** for the data engineering layer.
 
-Host Name/Address: db (or localhost if you are not using Docker)
+---
 
-Port: 5432
+## Database Exploration
 
-Maintenance Database: piscineds
+Using a PostgreSQL client (such as `psql` or a database administration tool),
+navigate through the following structure:
 
-Username: bea
+```text
+Databases
+└── <database_name>
+    └── Schemas
+        └── public
+            └── Tables
+Confirm that the expected tables are present, including:
 
-Password: mysecretpassword
+Customer-related tables (e.g. monthly datasets)
 
-Explore the Tables
+Items or reference tables
 
-In the left panel, expand the following tree:
+Exact table names may vary depending on the ingestion configuration.
 
-Servers
-└─ piscineds
-   └─ Databases
-      └─ piscineds
-         └─ Schemas
-            └─ public
-               └─ Tables
+Notes
+No credentials or connection details are hard-coded in this repository
 
-Confirm that these tables are listed:
+Database access parameters depend on the local or containerized environment
 
-data_2022_oct, data_2022_nov, data_2022_dec, data_2023_jan
+This exercise does not generate outputs or artifacts
 
-items
+Context
+This verification step ensures that the data engineering foundation is solid
+before proceeding to data warehousing, analysis, or modeling stages.
 
-Refresh the Table List
-
-If you have added or removed tables, right-click on Tables and select Refresh.
+All subsequent modules assume that this database layer is accessible and consistent.
