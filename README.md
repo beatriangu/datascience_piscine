@@ -99,24 +99,31 @@ KNN and ensemble voting
 
 Focus: model behavior, interpretability, and evaluation logic.
 
-📊 Visual Insights
+## 📊 Visual Insights
+
 Below are selected visual outputs that summarize key analytical insights from the project.
 
-Purchase Price Distribution
+### Purchase Price Distribution
+
 This boxplot shows the overall distribution of purchase prices, highlighting a strong right skew
 and the presence of significant outliers.
 
+![Overall Purchase Price Distribution](mustache_overall.png)
 
+---
 
-User Behavior Analysis
-These histograms analyze user purchasing behavior for users whose total spending is below 225 A$:
+### User Behavior Analysis
 
-Left: purchase frequency per user
+These histograms analyze user purchasing behavior for users whose total spending is below **225 A$**:
 
-Right: total spending per user
+- **Left:** purchase frequency per user  
+- **Right:** total spending per user  
 
 They reveal that most users make few purchases and spend relatively small amounts,
 with a clear long-tail distribution.
+
+![User Behavior Histograms](building_histograms.png)
+
 
 
 
