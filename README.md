@@ -99,31 +99,24 @@ KNN and ensemble voting
 
 Focus: model behavior, interpretability, and evaluation logic.
 
-## 📊 Visual Insights
-
+📊 Visual Insights
 Below are selected visual outputs that summarize key analytical insights from the project.
 
-### Purchase Price Distribution
-
+Purchase Price Distribution
 This boxplot shows the overall distribution of purchase prices, highlighting a strong right skew
 and the presence of significant outliers.
 
-![Overall Purchase Price Distribution](mustache_overall.png)
 
----
 
-### User Behavior Analysis
+User Behavior Analysis
+These histograms analyze user purchasing behavior for users whose total spending is below 225 A$:
 
-These histograms analyze user purchasing behavior for users whose total spending is below **225 A$**:
+Left: purchase frequency per user
 
-- **Left:** purchase frequency per user  
-- **Right:** total spending per user  
+Right: total spending per user
 
 They reveal that most users make few purchases and spend relatively small amounts,
 with a clear long-tail distribution.
-
-![User Behavior Histograms](building_histograms.png)
-
 
 
 
@@ -140,17 +133,17 @@ Each module maps to a real data role and a specific responsibility.
 🔁 Reproducibility & Execution
 This project does not include proprietary datasets.
 
-SQL scripts can be executed against a PostgreSQL instance
+SQL scripts can be executed against a PostgreSQL instance.
 
-Python scripts expect CSV inputs with documented or inferable schemas
+Python scripts expect CSV inputs with documented or inferable schemas.
 
-Visualizations and predictions are reproducible by running the scripts
+Visualizations and predictions are reproducible by running the scripts.
 
-Python Environment
+🐍 Python Environment
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-Docker (optional)
+🐳 Docker (optional)
 docker compose up --build
 🎯 Purpose
 This repository serves as:
