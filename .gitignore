@@ -1,26 +1,75 @@
-# Byte-compiled / optimized files
+# =========================
+# Python
+# =========================
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyo
+*.pyd
 
 # Virtual environments
 .venv/
 env/
 venv/
+ENV/
+.ENV/
 
-# Log files
+# =========================
+# OS / IDE
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# =========================
+# Logs / temp
+# =========================
 *.log
+*.tmp
 
-# Heavy data files and exercise CSVs
+# =========================
+# Jupyter (por si acaso)
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Postgres (CRITICAL: nunca en git)
+# =========================
 data/
+pgdata/
+postgres-data/
+*.pid
+
+# =========================
+# Data files (pesados o locales)
+# =========================
 customer/*.csv
 items/*.csv
 Data_scientist_1/ex00/*.csv
+*.zip
 
-# Script outputs (e.g., generated plots, reports)
+# =========================
+# Outputs generados (plots, reports, exports)
+# =========================
 */output/
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+*.txt
 
-# IDE and OS artifacts
-.vscode/
-.DS_Store
-Thumbs.db
+# =========================
+# / Subjects / enunciados (NO publicar)
+# =========================
+**/en.subject*
+**/subject*.pdf
+**/*subject*.pdf
+subjects/
+datascience_0.pdf
+datascience_4/
+
+# (extra: si guardas enunciados con otros nombres)
+**/*subject*
+
