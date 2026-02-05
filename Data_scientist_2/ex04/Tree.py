@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 # ─── Parámetros de Configuración ───────────────────────────────────────────────
 PARAMS_MODELO = {
-    'n_estimators': 1500,
+    'n_estimators': 100,
     'max_depth': 30,
     'min_samples_split': 2,
     'class_weight': {0: 1, 1: 6},
