@@ -167,6 +167,11 @@ It reflects a production-aware and role-oriented approach to working with data.
 
 This project was originally developed in an academic context and later refactored and curated
 to meet professional and public portfolio standards.
+![Overall Purchase Price Distribution](02_data_analyst/ex02/mustache_overall.png)
+
+![User Behavior Histograms](02_data_analyst/ex03/building_histograms.png)
+
+
 
 
 
