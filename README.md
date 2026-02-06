@@ -1,20 +1,29 @@
-# Data Science Foundations — End-to-End Project
+Data Science Foundations — End-to-End Data Lifecycle Project
 
-This repository is a **Data Science Foundations project** covering the full data lifecycle, from
-database initialization and data warehousing to exploratory analysis and classical machine learning models.
+This repository presents a structured Data Science Foundations project, covering the complete data lifecycle:
 
-The project is structured by **real-world data roles**, reflecting how data products are built in practice:
-from data engineering and SQL pipelines to data analysis, feature engineering, and modeling.
+From database initialization and SQL data modeling
+to exploratory data analysis, feature engineering, and classical machine learning.
 
-> ⚠️ **Disclaimer**  
-> This repository reflects a learning and consolidation process.  
-> The code is functional and structured for clarity and reproducibility, but minor edge cases may still exist.
+The project is intentionally organized by real-world data roles, reflecting how modern data systems are built in professional environments.
 
----
+🎯 Project Philosophy
 
-## 📂 Project Structure
+Rather than approaching exercises as isolated tasks, this repository models the natural progression of a data product:
 
-```text
+Data infrastructure
+
+Data warehousing
+
+Analytical exploration
+
+Feature preparation
+
+Model training & evaluation
+
+Each stage builds on the previous one.
+
+📂 Project Structure
 .
 ├── 00_data_engineer
 ├── 01_data_warehouse
@@ -29,24 +38,32 @@ from data engineering and SQL pipelines to data analysis, feature engineering, a
 ├── docker-compose.yml
 ├── Makefile
 └── requirements.txt
-Each module represents a distinct stage of the data lifecycle.
+
+
+Each directory represents a stage in the professional data workflow.
 
 🧩 Modules Overview
 00 — Data Engineer
-Database foundations and infrastructure
+
+Objective: Establish reliable and reproducible data infrastructure.
+
+Key elements:
 
 PostgreSQL initialization
 
-Schema creation
+Schema definition
 
-Data availability verification
+Data availability checks
 
-Reproducible environments (Docker-based)
+Docker-based reproducible environment
 
-Focus: reliable data foundations and infrastructure setup.
+This stage focuses on creating a solid and production-aware foundation for downstream data processes.
 
 01 — Data Warehouse
-SQL-based data preparation
+
+Objective: Transform raw datasets into structured, analysis-ready tables.
+
+Main tasks:
 
 Monthly data ingestion
 
@@ -54,114 +71,159 @@ Dataset consolidation
 
 Deduplication strategies
 
-Data fusion into analysis-ready tables
+SQL transformations
 
-Focus: transforming raw data into a single, consistent source of truth.
+Creation of unified analysis tables
+
+This stage ensures data consistency and integrity before analytical use.
 
 02 — Data Analyst
-Exploratory analysis and visualization
+
+Objective: Explore distributions and understand behavioral patterns.
+
+Activities include:
 
 Distribution analysis
 
-Boxplots and outlier detection
+Outlier detection
 
-Histograms and frequency analysis
+Boxplots and histograms
 
-Clustering preparation and elbow method
+Frequency analysis
 
-Focus: understanding data behavior and extracting insights through visualization.
+Clustering preparation (elbow method logic)
+
+📊 Visual Insights
+Purchase Price Distribution (ex02)
+
+This boxplot highlights the distribution of purchase prices.
+The visualization reveals:
+
+A strong right-skewed distribution
+
+Significant high-value outliers
+
+Concentration of values within a lower price range
+
+User Behavior Analysis (ex03)
+
+These histograms focus on users whose total spending is below 225 A$, allowing clearer observation of general purchasing behavior.
+
+Left: purchase frequency per user
+
+Right: total spending per user
+
+Key observations:
+
+Most users make few purchases
+
+Spending is concentrated in lower ranges
+
+Clear long-tail behavior typical of transactional systems
 
 03 — Data Scientist I
-Feature analysis and preprocessing
 
-Feature distributions
+Objective: Prepare meaningful features for modeling.
 
-Class comparisons (Jedi vs Sith)
+Main steps:
+
+Feature distribution analysis
+
+Class comparison (Jedi vs Sith segmentation)
 
 Normalization and standardization
 
-Train/test dataset preparation
+Train/test split preparation
 
-Focus: preparing clean and meaningful features for modeling.
+Preprocessing pipelines
+
+This stage focuses on transforming raw analytical insights into model-ready datasets.
 
 04 — Data Scientist II
-Modeling and evaluation
+
+Objective: Build and evaluate predictive models.
+
+Techniques explored:
+
+Decision Trees
+
+K-Nearest Neighbors (KNN)
+
+Ensemble voting strategies
 
 Confusion matrices
 
 Correlation heatmaps
 
-Feature selection
+Feature selection logic
 
-Decision trees
+The emphasis is on:
 
-KNN and ensemble voting
+Model interpretability
 
-Focus: model behavior, interpretability, and evaluation logic.
+Evaluation rigor
 
-## 📊 Visual Insights
+Bias awareness
 
-### Purchase Price Distribution (ex2)
+Structured experimentation
 
-This boxplot shows the overall distribution of purchase prices, highlighting a strong right skew
-and the presence of significant outliers.
+🧠 Technical Design Decisions
+✔ Clear separation of concerns
 
-![Overall Purchase Price Distribution](mustache_overall.png)
+Each module corresponds to a specific data role.
 
----
+✔ Reproducibility over artifacts
 
-### User Behavior Analysis (ex3)
+Plots and predictions are reproducible by executing scripts.
+Generated outputs are not versioned systematically.
 
-These histograms analyze user purchasing behavior for users whose total spending is below **225 A$**:
+✔ Academic context, professional refactoring
 
-- **Left:** purchase frequency per user  
-- **Right:** total spending per user  
-
-They reveal that most users make few purchases and spend relatively small amounts,
-with a clear long-tail distribution.
-
-![User Behavior Histograms](building_histograms.png)
-
-
-🧠 Design Decisions
-Datasets, subjects, and evaluation PDFs are excluded
-This repository focuses on workflows and logic rather than academic artifacts.
-
-Generated outputs are not versioned systematically
-Plots and predictions can be regenerated by executing the scripts.
-
-Clear separation of concerns
-Each module maps to a real data role and a specific responsibility.
+Originally developed in an academic setting, this repository has been refactored and curated to meet professional portfolio standards.
 
 🔁 Reproducibility & Execution
-This project does not include proprietary datasets.
+
+The repository does not include proprietary datasets.
+
+However:
 
 SQL scripts can be executed against a PostgreSQL instance.
 
-Python scripts expect CSV inputs with documented or inferable schemas.
+Python scripts expect CSV inputs with documented schemas.
 
-Visualizations and predictions are reproducible by running the scripts.
+Visualizations and predictions are reproducible.
 
-🐍 Python Environment
+🐍 Python Environment Setup
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-🐳 Docker (optional)
+
+🐳 Docker (Optional)
 docker compose up --build
-🎯 Purpose
-This repository serves as:
 
-a technical portfolio of data foundations
 
-a reference for structured data workflows
+This initializes the PostgreSQL service and project environment.
 
-a demonstration of progression from data engineering to data science
+📌 Purpose of This Repository
 
-It reflects a production-aware and role-oriented approach to working with data.
+This project serves as:
 
-📚 Background
-This project was originally developed in an academic context and later refactored and curated
-to meet professional and public portfolio standards.
+A structured technical portfolio
+
+A demonstration of end-to-end data workflow understanding
+
+A progression from Data Engineering to Data Science
+
+A reproducible foundation for future modeling work
+
+It reflects a production-aware mindset and a role-oriented approach to working with data.
+
+⚠️ Disclaimer
+
+This repository reflects a learning and consolidation process.
+
+While the workflows are functional and structured for clarity, minor edge cases may still exist.
+The focus is on conceptual rigor, structure, and reproducibility.
 
 
 
