@@ -97,6 +97,7 @@ Clustering preparation (elbow method logic)
 Purchase Price Distribution (ex02)
 
 This boxplot highlights the distribution of purchase prices.
+
 The visualization reveals:
 
 A strong right-skewed distribution
