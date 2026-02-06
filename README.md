@@ -44,6 +44,8 @@ Each stage builds on the previous one.
 Each directory represents a stage in the professional data workflow.
 
 📊 Visual Insights
+![Overall Purchase Price Distribution](mustache_overall.png)
+
 Purchase Price Distribution (ex02)
 
 This boxplot highlights the distribution of purchase prices, revealing:
@@ -55,6 +57,8 @@ Significant high-value outliers
 Concentration of values within a lower price range
 
 User Behavior Analysis (ex03)
+![User Behavior Histograms](building_histograms.png)
+
 
 These histograms focus on users whose total spending is below 225 A$, allowing clearer observation of general purchasing behavior.
 
