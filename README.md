@@ -101,16 +101,16 @@ Focus: model behavior, interpretability, and evaluation logic.
 
 ## 📊 Visual Insights
 
-### Purchase Price Distribution
+### Purchase Price Distribution (ex2)
 
 This boxplot shows the overall distribution of purchase prices, highlighting a strong right skew
 and the presence of significant outliers.
 
-![Overall Purchase Price Distribution](./mustache_overall.png)
+![Overall Purchase Price Distribution](mustache_overall.png)
 
 ---
 
-### User Behavior Analysis
+### User Behavior Analysis (ex3)
 
 These histograms analyze user purchasing behavior for users whose total spending is below **225 A$**:
 
@@ -120,7 +120,7 @@ These histograms analyze user purchasing behavior for users whose total spending
 They reveal that most users make few purchases and spend relatively small amounts,
 with a clear long-tail distribution.
 
-![User Behavior Histograms](./building_histograms.png)
+![User Behavior Histograms](building_histograms.png)
 
 
 🧠 Design Decisions
