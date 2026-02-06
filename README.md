@@ -51,6 +51,8 @@ A strong right-skewed distribution
 Significant high-value outliers
 
 Concentration of values within a lower price range
+![Overall Purchase Price Distribution](https://raw.githubusercontent.com/beatriangu/datascience_piscine/main/mustache_overall.png)
+
 
 
 
@@ -70,6 +72,7 @@ Spending is concentrated in lower ranges
 Clear long-tail behavior typical of transactional systems
 
 
+![User Behavior Histograms](https://raw.githubusercontent.com/beatriangu/datascience_piscine/main/building_histograms.png)
 
 🧠 Technical Design Decisions
 Clear separation of concerns
