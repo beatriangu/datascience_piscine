@@ -40,9 +40,10 @@ Each stage builds on the previous one.
 ├── docker-compose.yml
 ├── Makefile
 └── requirements.txt
+Each directory represents a stage in the professional data workflow.
+
 📊 Visual Insights
 Purchase Price Distribution (ex02)
-
 This boxplot highlights the distribution of purchase prices, revealing:
 
 A strong right-skewed distribution
@@ -51,8 +52,9 @@ Significant high-value outliers
 
 Concentration of values within a lower price range
 
-User Behavior Analysis (ex03)
 
+
+User Behavior Analysis (ex03)
 These histograms focus on users whose total spending is below 225 A$, allowing clearer observation of general purchasing behavior.
 
 Left: purchase frequency per user
@@ -67,8 +69,9 @@ Spending is concentrated in lower ranges
 
 Clear long-tail behavior typical of transactional systems
 
-🧠 Technical Design Decisions
 
+
+🧠 Technical Design Decisions
 Clear separation of concerns
 
 Reproducibility over static artifacts
@@ -79,11 +82,9 @@ Role-based modular structure
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-
 🐳 Docker (Optional)
 docker compose up --build
-
 ⚠️ Disclaimer
-
 This repository reflects a learning and consolidation process.
 While functional and structured for clarity, minor edge cases may still exist.
+
